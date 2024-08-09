@@ -1,6 +1,6 @@
 "use client";
 
-import ProductItem from "@/components/home/products/ProductItem";
+import ProductItem from "@/components/common/productItem/ProductItem";
 import { useParams } from "next/navigation";
 import React from "react";
 import useSWR from "swr";

@@ -3,204 +3,112 @@
 import Button from "@/components/common/button/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import toastConfig from "@/utils/toastConfig";
+import { RegisterFormType, registerSchema } from "@/schema/auth.schema";
+import authApiRequest from "@/utils/requests";
+import { handleErrorApi } from "@/utils/errors";
+import { useState } from "react";
 type Props = {};
 
-export interface RegisterValues {
-  username: string;
-  password: string;
-  confirmPassword: string;
-  email: string;
-}
-
 const Register = (props: Props) => {
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-
-  const validationSchema = yup.object().shape({
-    username: yup.string().required("Username không được để trống"),
-    password: yup
-      .string()
-      .required("Mật khẩu không được để trống")
-      .min(6, "Mật khẩu quá ngắn."),
-    confirmPassword: yup
-      .string()
-      .required("Nhập lại mật khẩu không đúng")
-      .oneOf([yup.ref("password")], "Nhập lại mật khẩu không đúng"),
-    email: yup
-      .string()
-      .required("Email không được để trống")
-      .email("Email không đúng định dạng"),
-  });
-
-  // const fetcher: Fetcher<any, string> = (url) =>
-  //   fetch(url).then((res) => res.json());
-  // const { data, mutate } = useSWR(
-  //   "https://diaty2api.vercel.app/api/register",
-  //   fetcher
-  // );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterValues>({
+  } = useForm<RegisterFormType>({
     mode: "onChange",
     defaultValues: {
       username: "",
+      email: "",
       password: "",
       confirmPassword: "",
-      email: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(registerSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisterValues> = async (values) => {
+  const onSubmit: SubmitHandler<RegisterFormType> = async (values) => {
+    if (loading) return;
+    setLoading(true);
     try {
-      const res = await fetch("https://diaty2api.vercel.app/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
+      const res = await authApiRequest.register(values).then((res) => {
+        toastConfig({
+          message: res.payload.message || "Đăng ký thành công",
+          type: "success",
+          autoClose: 3000,
+        });
+        setTimeout(() => router.push("/login"), 3000);
       });
 
-      const result = await res.json();
-
-      if (res.ok) {
-        toast.success(result.message, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        // mutate(); // Re-fetch the data
-      } else {
-        toast.error(result.message, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }
-    } catch (error: any) {
-      toast.error(error, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
+      console.log(res);
+    } catch (error) {
+      handleErrorApi({
+        error,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="col-span-2 md:col-span-1 relative bg-transparent h-screen flex justify-center items-center animate-translateR order-2">
-        <div className="relative flex flex-col animate-translateR">
-          <h1 className="text-[25px] leading-[30px] mb-3 mt-0 text-[#222] font-bold uppercase">
-            Đăng ký!
-          </h1>
-
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col items-center gap-5 w-[300px]"
-          >
-            {isSuccess && (
-              <p className="w-full bg-[#07bc0c]/80 text-center text-sm text-white px-5 py-3 rounded-md">
-                Đăng ký thành công
-              </p>
-            )}
-
-            {[
-              { id: "username", label: "Tài khoản", type: "text" },
-              { id: "password", label: "Mật khẩu", type: "password" },
-              {
-                id: "confirmPassword",
-                label: "Nhập lại Mật khẩu",
-                type: "password",
-              },
-              { id: "email", label: "Email", type: "email" },
-            ].map((item) => (
-              <label
-                key={item.id}
-                htmlFor={item.id}
-                className="relative w-full after:absolute after:w-0 after:h-[2px] after:left-0 after:bottom-0 after:bg-theme after:block after:z-10  hover:after:w-full focus-within:after:w-full after:transition-all after:duration-300"
-              >
-                {errors[item.id as keyof RegisterValues] && (
-                  <div className="text-red ml-2 mt-2 text-xs">
-                    {errors[item.id as keyof RegisterValues]?.message}
-                  </div>
-                )}
-                <input
-                  required
-                  type={item.type}
-                  id={item.id}
-                  placeholder={item.label}
-                  className="relative text-black text-sm border-b border-solid border-[#3f4a50] shadow-none w-full h-11 font-semibold bg-transparent focus:outline-none pl-6 placeholder-black"
-                  {...register(item.id as keyof RegisterValues)}
-                />
-              </label>
-            ))}
-            <div className="w-full flex justify-end">
-              <Button
-                className="bg-theme border-theme text-white hover:bg-white hover:text-theme"
-                type="submit"
-              >
-                Đăng ký
-              </Button>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col items-center gap-5 w-[300px]"
+    >
+      {[
+        { id: "username", label: "Tài khoản", type: "text" },
+        { id: "email", label: "Email", type: "email" },
+        { id: "password", label: "Mật khẩu", type: "password" },
+        {
+          id: "confirmPassword",
+          label: "Nhập lại Mật khẩu",
+          type: "password",
+        },
+      ].map((item) => (
+        <label
+          key={item.id}
+          htmlFor={item.id}
+          className="relative w-full after:absolute after:w-0 after:h-[2px] after:left-0 after:bottom-0 after:bg-theme after:block after:z-10  hover:after:w-full focus-within:after:w-full after:transition-all after:duration-300"
+        >
+          {errors[item.id as keyof RegisterFormType] && (
+            <div className="text-red ml-2 mt-2 text-xs">
+              {errors[item.id as keyof RegisterFormType]?.message}
             </div>
-
-            <p className="text-xs text-black font-semibold w-full text-start py-5">
-              Đã có tài khoản?
-              <Link
-                href="/login"
-                className="uppercase text-theme text-sm font-semibold mx-2 hover:text-themeLight transition-all duration-300"
-              >
-                đăng nhập
-              </Link>
-              ngay!
-            </p>
-          </form>
-        </div>
+          )}
+          <input
+            required
+            type={item.type}
+            id={item.id}
+            placeholder={item.label}
+            className="relative text-black text-sm border-b border-solid border-[#3f4a50] shadow-none w-full h-11 font-semibold bg-transparent focus:outline-none pl-6 placeholder-black"
+            {...register(item.id as keyof RegisterFormType)}
+          />
+        </label>
+      ))}
+      <div className="w-full flex justify-end">
+        <Button
+          className="bg-theme border-theme text-white hover:bg-white hover:text-theme"
+          type="submit"
+        >
+          Đăng ký
+        </Button>
       </div>
 
-      <div className="hidden md:flex relative bg-theme h-screen flex justify-center items-center animate-translateL z-20 bg-gradient-to-tr from-black to-theme rounded-e-[100px] overflow-hidden order-1">
-        <div className="relative flex flex-col justify-center items-center animate-translateL p-10">
-          <h1 className="text-[40px] text-white text-bold text-center mb-5">
-            Hello, friend!
-          </h1>
-          <p className="text-base text-white mb-5 text-center">
-            Đăng ký thông tin cá nhân của bạn để sử dụng tất cả các tính năng
-            của trang web
-          </p>
-          <Button
-            className="bg-transparent text-white border-white hover:bg-white hover:text-theme text-sm"
-            onClick={() => router.push("/login")}
-          >
-            Đăng nhập
-          </Button>
-        </div>
-      </div>
-    </div>
+      <p className="text-xs text-black font-semibold w-full text-start py-5">
+        Đã có tài khoản?
+        <Link
+          href="/login"
+          className="uppercase text-theme text-sm font-semibold mx-2 hover:text-themeLight transition-all duration-300"
+        >
+          đăng nhập
+        </Link>
+        ngay!
+      </p>
+    </form>
   );
 };
 

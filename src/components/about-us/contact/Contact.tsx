@@ -1,5 +1,4 @@
 import Button from "@/components/common/button/Button";
-import React from "react";
 
 type Props = {};
 

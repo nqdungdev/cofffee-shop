@@ -106,7 +106,7 @@ const SearchBox = ({ useSearch }: Props) => {
 
       {isSearch && (
         <div
-          className={`fixed left-0 top-0 w-full h-full bg-black transition-all duration-300 ${
+          className={`fixed left-0 top-0 w-full h-full bg-black transition-all duration-300 z-40 ${
             isSearch ? "opacity-50" : "opacity-0"
           }`}
         ></div>

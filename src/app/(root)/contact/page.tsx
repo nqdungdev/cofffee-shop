@@ -75,147 +75,131 @@ const Contact = (props: Props) => {
 
   return (
     <>
-      <section className="min-h-[200px] h-[200px] text-center overflow-hidden">
-        <div className="bg-[url(/uploads/source/background/coffeebackgroud1.jpg)] bg-cover w-full h-full">
-          <div className="relative flex justify-center items-center w-full h-full after:absolute after:bg-black after:bg-opacity-50 after:left-0 after:top-0 after:w-full after:h-full">
-            <h1 className="text-center text-[40px] text-white font-bold z-10">
-              Liên hệ
-            </h1>
-          </div>
+      <div className="grid grid-cols-3 bg-white rounded-md overflow-hidden">
+        <div className="col-span-3 md:col-span-1 overflow-hidden">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.534421103568!2d106.64076052000632!3d10.846897367561075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529976b24ab8b%3A0x7528411e16ed1140!2zxJDhuqBJIEhPw4BORyBQSMOBVA!5e0!3m2!1svi!2sus!4v1663941711016!5m2!1svi!2sus"
+            width={600}
+            height={450}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full h-full border-0 min-h-[200]"
+          />
         </div>
-      </section>
+        <div className="col-span-3 md:col-span-2 p-4">
+          <h3 className="text-[#304e73] font-bold text-[25px] leading-[25px] relative my-5 pb-2 after:absolute after:left-0 after:top-full after:w-[50px] after:h-[1px] after:bg-themeLight">
+            THÔNG TIN LIÊN HỆ
+          </h3>
 
-      <section className="m-0 bg-[#e6e6e6] py-3">
-        <div className="container">
-          <div className="grid grid-cols-3 bg-white rounded-md overflow-hidden">
-            <div className="col-span-3 md:col-span-1 overflow-hidden">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.534421103568!2d106.64076052000632!3d10.846897367561075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529976b24ab8b%3A0x7528411e16ed1140!2zxJDhuqBJIEhPw4BORyBQSMOBVA!5e0!3m2!1svi!2sus!4v1663941711016!5m2!1svi!2sus"
-                width={600}
-                height={450}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-full border-0 min-h-[200]"
+          <div className="py-3">
+            <p className="text-base leading-[28px] tracking-[0.3px] text-[5b6880] mb-5">
+              <span className="text-[#01358d]">Địa chỉ: </span> TP Hồ Chí Minh
+            </p>
+            <p className="text-base leading-[28px] tracking-[0.3px] text-[5b6880] mb-5">
+              <span className="text-[#01358d]">Điện thoại: </span> 0123 456 789
+            </p>
+            <p className="text-base leading-[28px] tracking-[0.3px] text-[5b6880] mb-5">
+              <span className="text-[#01358d]">E-mail: </span>
+              email@gmail.com
+            </p>
+
+            <div className="p-0">
+              <ul className="mt-8 mb-4 pl-8 flex items-center">
+                {[
+                  {
+                    label: "Facebook",
+                    link: "https://www.facebook.com/",
+                    icon: <FaFacebookF />,
+                  },
+                  {
+                    label: "Youtube",
+                    link: "https://www.youtube.com/",
+                    icon: <FaYoutube />,
+                  },
+                ].map((el, index) => (
+                  <li key={index} className="mr-3">
+                    <Link
+                      className="flex justify-center items-center bg-theme text-white w-10 h-10 rounded-full"
+                      href={el.link}
+                      target="_blank"
+                    >
+                      {el.icon}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-[#304e73] font-bold text-[25px] leading-[25px] relative my-5 pb-2 after:absolute after:left-0 after:top-full after:w-[50px] after:h-[1px] after:bg-themeLight">
+            <h3>LIÊN HỆ CHÚNG TÔI</h3>
+          </div>
+
+          <form
+            className="overflow-hidden w-full"
+            onSubmit={handleSubmit(onSuccess)}
+          >
+            <div className="grid grid-cols-2 gap-5">
+              <div className="col-span-2 md:col-span-1 mb-3 relative">
+                <input
+                  type="text"
+                  className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
+                  id="name"
+                  placeholder="Họ tên của bạn"
+                  required
+                  {...register("name")}
+                />
+              </div>
+              <div className="mb-3 relative col-md-6">
+                <input
+                  type="email"
+                  className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
+                  id="email"
+                  placeholder="Email của bạn"
+                  required
+                  {...register("email")}
+                />
+              </div>
+            </div>
+
+            <div className="mb-3 relative">
+              <input
+                type="tel"
+                className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
+                id="phone"
+                placeholder="Điện thoại của bạn"
+                required
+                {...register("phone")}
               />
             </div>
-            <div className="col-span-3 md:col-span-2 p-4">
-              <h3 className="text-[#304e73] font-bold text-[25px] leading-[25px] relative my-5 pb-2 after:absolute after:left-0 after:top-full after:w-[50px] after:h-[1px] after:bg-themeLight">
-                THÔNG TIN LIÊN HỆ
-              </h3>
 
-              <div className="py-3">
-                <p className="text-base leading-[28px] tracking-[0.3px] text-[5b6880] mb-5">
-                  <span className="text-[#01358d]">Địa chỉ: </span> TP Hồ Chí
-                  Minh
-                </p>
-                <p className="text-base leading-[28px] tracking-[0.3px] text-[5b6880] mb-5">
-                  <span className="text-[#01358d]">Điện thoại: </span> 0123 456
-                  789
-                </p>
-                <p className="text-base leading-[28px] tracking-[0.3px] text-[5b6880] mb-5">
-                  <span className="text-[#01358d]">E-mail: </span>
-                  email@gmail.com
-                </p>
-
-                <div className="p-0">
-                  <ul className="mt-8 mb-4 pl-8 flex items-center">
-                    {[
-                      {
-                        label: "Facebook",
-                        link: "https://www.facebook.com/",
-                        icon: <FaFacebookF />,
-                      },
-                      {
-                        label: "Youtube",
-                        link: "https://www.youtube.com/",
-                        icon: <FaYoutube />,
-                      },
-                    ].map((el, index) => (
-                      <li key={index} className="mr-3">
-                        <Link
-                          className="flex justify-center items-center bg-theme text-white w-10 h-10 rounded-full"
-                          href={el.link}
-                          target="_blank"
-                        >
-                          {el.icon}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="text-[#304e73] font-bold text-[25px] leading-[25px] relative my-5 pb-2 after:absolute after:left-0 after:top-full after:w-[50px] after:h-[1px] after:bg-themeLight">
-                <h3>LIÊN HỆ CHÚNG TÔI</h3>
-              </div>
-
-              <form
-                className="overflow-hidden w-full"
-                onSubmit={handleSubmit(onSuccess)}
-              >
-                <div className="grid grid-cols-2 gap-5">
-                  <div className="col-span-2 md:col-span-1 mb-3 relative">
-                    <input
-                      type="text"
-                      className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
-                      id="name"
-                      placeholder="Họ tên của bạn"
-                      required
-                      {...register("name")}
-                    />
-                  </div>
-                  <div className="mb-3 relative col-md-6">
-                    <input
-                      type="email"
-                      className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
-                      id="email"
-                      placeholder="Email của bạn"
-                      required
-                      {...register("email")}
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-3 relative">
-                  <input
-                    type="tel"
-                    className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
-                    id="phone"
-                    placeholder="Điện thoại của bạn"
-                    required
-                    {...register("phone")}
-                  />
-                </div>
-
-                <div className="mb-3 relative">
-                  <textarea
-                    className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
-                    value=""
-                    id="content"
-                    placeholder="Ghi chú"
-                    style={{
-                      overflow: "hidden",
-                      wordWrap: "break-word",
-                      height: 150,
-                    }}
-                    {...register("content")}
-                  />
-                </div>
-
-                <div className="mb-3 relative">
-                  <Button
-                    type="submit"
-                    className="bg-blue border-blue text-white hover:bg-white hover:text-blue"
-                  >
-                    Gửi
-                  </Button>
-                </div>
-              </form>
+            <div className="mb-3 relative">
+              <textarea
+                className="shadow-none w-full h-[52px] bg-transparent border border-solid border-[#d9dde4] rounded-md p-5 txt-base leading-[1.2] tracking-[0.3px]"
+                value=""
+                id="content"
+                placeholder="Ghi chú"
+                style={{
+                  overflow: "hidden",
+                  wordWrap: "break-word",
+                  height: 150,
+                }}
+                {...register("content")}
+              />
             </div>
-          </div>
+
+            <div className="mb-3 relative">
+              <Button
+                type="submit"
+                className="bg-blue border-blue text-white hover:bg-white hover:text-blue"
+              >
+                Gửi
+              </Button>
+            </div>
+          </form>
         </div>
-      </section>
+      </div>
     </>
   );
 };

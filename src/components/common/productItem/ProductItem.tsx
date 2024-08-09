@@ -83,10 +83,10 @@ const ProductItem = ({ product }: Props) => {
       <div className="w-full relative z-10 pr-[20%] p-1">
         <div
           title={product.name}
-          className="py-[0.7%] block text-[17px] text-theme text-ellipsis line-clamp-1 font-semibold uppercase"
+          className="py-[0.7%] block text-[17px] text-theme text-ellipsis line-clamp-1 font-semibold uppercase cursor-pointer"
           onClick={() => handleView(product)}
         >
-          <p className="line-clamp-1"> {product.name}</p>
+          <p className="line-clamp-1">{product.name}</p>
         </div>
         <p className="line-clamp-1" title={product.description}>
           {product.description}

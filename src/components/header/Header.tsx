@@ -9,13 +9,17 @@ import { usePathname, useRouter } from "next/navigation";
 import SearchBox from "./SearchBox";
 import PayBox from "./PayBox";
 import MenuBox from "./MenuBox";
-import { useAppSelector } from "@/lib/hooks";
+import authApiRequest from "@/utils/requests";
+import { handleErrorApi } from "@/utils/errors";
 
-type Props = {};
+type Props = {
+  accessToken: string;
+};
 
-const Header = (props: Props) => {
+const Header = ({ accessToken }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
+  console.log(accessToken);
 
   const [active, setActive] = useState<string>(
     pathname === "/" ? "" : `${pathname.split("/")[1]}`
@@ -23,8 +27,6 @@ const Header = (props: Props) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isPay, setIsPay] = useState<boolean>(false);
   const [isMenu, setIsMenu] = useState<boolean>(false);
-  // const { user } = useAppSelector((state) => state.usersReducer);
-  // console.log(user);
 
   const categories = [
     { label: "Trang chủ", link: "/" },
@@ -33,6 +35,16 @@ const Header = (props: Props) => {
     { label: "Liên hệ", link: "contact" },
   ];
 
+  const handleLogout = async (accessToken: string) => {
+    try {
+      await authApiRequest.callLogoutFromNextJsClientToNextJsServer();
+      router.push("/login");
+    } catch (error) {
+      handleErrorApi({
+        error,
+      });
+    }
+  };
   return (
     <header id="header" className="fixed z-50 lg:absolute top-0 left-0 w-full">
       <div className="p-3 bg-white lg:bg-transparent h-[100px]">
@@ -175,12 +187,52 @@ const Header = (props: Props) => {
                 </span>
               </div>
 
-              <Button
-                className="text-white !w-10 !h-10 !p-2 bg-theme border-theme hover:text-theme rounded-full flex justify-center items-center relative"
-                onClick={() => router.push("/login")}
-              >
-                <FaUser />
-              </Button>
+              {accessToken ? (
+                <div className="relative group">
+                  <Button
+                    className="text-white !w-10 !h-10 !p-2 bg-theme border-theme hover:text-theme rounded-full flex justify-center items-center relative"
+                    onClick={() => router.push("/profile")}
+                  >
+                    <Image
+                      src="/uploads/source/logo/logo.png"
+                      alt="Coffee"
+                      title="Coffee"
+                      loading="lazy"
+                      width={40}
+                      height={40}
+                    />
+                  </Button>
+                  <div className="absolute top-[calc(100%_+_8px)] right-0 w-[200px] h-max bg-white border border-solid border-theme after:absolute after:bottom-full after:right-2 after:w-0 after:h-0 after:border-[10px] after:border-transparent after:border-solid after:border-b-theme transition-all duration-300 opacity-0 collapse group-hover:visible group-hover:opacity-100 rounded-md">
+                    <ul className="flex flex-col text-txt items-center">
+                      {[
+                        { label: "Tài khoản của tôi", link: "/profile" },
+                        { label: "Đơn mua", link: "/profile" },
+                        { label: "Đăng xuất", link: "/logout" },
+                      ].map((el, index) => (
+                        <li key={index} className="py-3 group/item">
+                          <Button
+                            className="group-hover/item:!text-theme transition-all duration-300 !capitalize !bg-transparent !border-0 !text-base !font-normal !w-max !text-txt hover:!bg-transparent !p-0"
+                            onClick={() => {
+                              if (el.link === "/logout")
+                                return handleLogout(accessToken);
+                              router.push(`/${el.link}`);
+                            }}
+                          >
+                            {el.label}
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                <Button
+                  className="text-white !w-10 !h-10 !p-2 bg-theme border-theme hover:text-theme rounded-full flex justify-center items-center relative"
+                  onClick={() => router.push("/login")}
+                >
+                  <FaUser />
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -235,12 +287,52 @@ const Header = (props: Props) => {
             </span>
           </div>
 
-          <Button
-            className="text-white !w-8 !h-8 !p-2 bg-theme border-theme hover:text-theme rounded-full flex justify-center items-center relative"
-            onClick={() => router.push("/login")}
-          >
-            <FaUser />
-          </Button>
+          {accessToken ? (
+            <div className="relative group">
+              <Button
+                className="text-white !w-8 !h-8 !p-2 bg-theme border-theme hover:text-theme rounded-full flex justify-center items-center relative"
+                onClick={() => router.push("/profile")}
+              >
+                <Image
+                  src="/uploads/source/logo/logo.png"
+                  alt="Coffee"
+                  title="Coffee"
+                  loading="lazy"
+                  width={40}
+                  height={40}
+                />
+              </Button>
+              <div className="absolute top-[calc(100%_+_8px)] right-0 w-[200px] h-max bg-white border border-solid border-theme after:absolute after:bottom-full after:right-2 after:w-0 after:h-0 after:border-[10px] after:border-transparent after:border-solid after:border-b-theme transition-all duration-300 opacity-0 collapse group-hover:visible group-hover:opacity-100 rounded-md">
+                <ul className="flex flex-col text-txt items-center">
+                  {[
+                    { label: "Tài khoản của tôi", link: "/profile" },
+                    { label: "Đơn mua", link: "/profile" },
+                    { label: "Đăng xuất", link: "/logout" },
+                  ].map((el, index) => (
+                    <li key={index} className="py-3 group/item">
+                      <Button
+                        className="group-hover/item:!text-theme transition-all duration-300 !capitalize !bg-transparent !border-0 !text-base !font-normal !w-max !text-txt hover:!bg-transparent !p-0"
+                        onClick={() => {
+                          if (el.link === "/logout")
+                            return handleLogout(accessToken);
+                          router.push(`/${el.link}`);
+                        }}
+                      >
+                        {el.label}
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <Button
+              className="text-white !w-8 !h-8 !p-2 bg-theme border-theme hover:text-theme rounded-full flex justify-center items-center relative"
+              onClick={() => router.push("/login")}
+            >
+              <FaUser />
+            </Button>
+          )}
         </div>
       </nav>
 

@@ -22,7 +22,7 @@ const ViewedProducts = (props: Props) => {
             product && (
               <article key={index} className="mb-3 flex gap-2">
                 <Link href={`/menu/${product._id}`}>
-                  <div className="relative w-[75px] h-[75px]">
+                  <div className="relative w-[75px] h-[75px] rounded-md overflow-hidden">
                     <Image
                       src={product.image}
                       alt={product.name}
@@ -35,17 +35,17 @@ const ViewedProducts = (props: Props) => {
                   </div>
                 </Link>
 
-                <div className="m-0">
-                  <h3 className="text-sm text-[#323c3f] leading-[1.4] tracking-[0.01em] mb-3">
+                <div className="m-0 flex flex-col justify-between">
+                  <h3 className="text-base text-theme leading-[1.4] tracking-[0.01em] mb-3">
                     <Link href={`/menu/${product._id}`} title={product.name}>
-                      {product.name}
+                      <p className="line-clamp-1">{product.name}</p>
                     </Link>
                   </h3>
-                  <p className="text-xl font-bold text-red mb-8 leading-[25px] flex gap-2 items-end">
+                  <p className="text-xl font-bold text-red leading-[25px] flex gap-2 items-end">
                     <span className="text-[#ff5c5f]">
                       {(product.new_price / 1000).toFixed(3)}đ
                     </span>
-                    <del className="text-[#5b5b5b]">
+                    <del className="text-[#5b5b5b] text-sm">
                       {(product.old_price / 1000).toFixed(3)}đ
                     </del>
                   </p>

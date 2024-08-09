@@ -17,7 +17,7 @@ const Products = (props: Props) => {
             <FaChevronRight className="text-theme group-hover/icon:text-white transition-all duration-500" />
           </div>
 
-          <div className="relative block bg-transparent overflow-hidden flex justify-start items-start gap-5">
+          <div className="relative bg-transparent overflow-hidden flex justify-start items-start gap-5">
             {[
               {
                 title: "Robusta natural rang mộc",
@@ -57,7 +57,7 @@ const Products = (props: Props) => {
                   <p className="mb-0 text-white font-bold text-[24px] leading-[36px]">
                     <Link href={el.link}>{el.title}</Link>
                   </p>
-                  <div className="text-white text-base font-normal mb-0 text-sm">
+                  <div className="text-white font-normal mb-0 text-sm">
                     <p>{el.description}</p>
                   </div>
                 </div>

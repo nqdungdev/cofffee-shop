@@ -1,7 +1,7 @@
 "use client";
 
 import Pagination from "@/components/common/pagination/Pagination";
-import ProductItem from "@/components/home/products/ProductItem";
+import ProductItem from "@/components/common/productItem/ProductItem";
 import { useAppSelector } from "@/lib/hooks";
 import { Dispatch, SetStateAction } from "react";
 

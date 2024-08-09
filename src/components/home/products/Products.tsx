@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import ProductItem from "./ProductItem";
+import ProductItem from "@/components/common/productItem/ProductItem";
 import useSWR from "swr";
 import Skeleton from "@/components/common/skeleton/Skeleton";
 import { useAppDispatch } from "@/lib/hooks";
@@ -18,7 +18,7 @@ const Product = (props: Props) => {
   });
 
   return (
-    <section className="bg-[url('/uploads/source/background/bo-cong-anh-1.png')] bg-cover bg-no-repeat bg-center bg-fixed bg-white/80 bg-blend-color-burn py-12 relative">
+    <section className="bg-[url('/uploads/source/background/coffee-splatter.png')] bg-cover bg-no-repeat bg-center bg-fixed bg-white/80 bg-blend-color-burn py-12 relative">
       <div className="container">
         <div className="relative ">
           <div className="text-center mb-8">

@@ -48,7 +48,7 @@ const ProductCategory = (props: Props) => {
                     </Link>
                   </div>
 
-                  <div className="relative block text-center -mb-3 h-[252px] -mt-12 bg-[url('/uploads/source/background/danhmucsanpham.png')] bg-cover bg-no-repeat bg-contain">
+                  <div className="relative block text-center -mb-3 h-[252px] -mt-12 bg-[url('/uploads/source/background/danhmucsanpham.png')] bg-no-repeat bg-contain">
                     <Image
                       src={el.image}
                       alt={el.label}

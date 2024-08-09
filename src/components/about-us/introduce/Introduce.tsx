@@ -10,7 +10,7 @@ const Introduce = (props: Props) => {
       <div className="container-fluid">
         <div className="relative w-full h-[500px]">
           <Image
-            src="/uploads/source/background/coffeebackgroud1.jpg"
+            src="/uploads/source/background/coffee-background-1.jpg"
             alt="Về chúng tôi"
             title="Về chúng tôi"
             loading="lazy"

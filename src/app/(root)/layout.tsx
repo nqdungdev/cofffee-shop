@@ -6,6 +6,7 @@ import Footer from "@/components/footer/Footer";
 import StoreProvider from "./StoreProvider";
 import Link from "next/link";
 import { FaChevronUp } from "react-icons/fa6";
+import { cookies } from "next/headers";
 
 const josefinSans = Josefin_Sans({ subsets: ["latin"] });
 
@@ -19,11 +20,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get("accessToken");
   return (
     <html lang="en" className="scroll-smooth">
       <body className={josefinSans.className}>
         <StoreProvider>
-          <Header />
+          <Header accessToken={accessToken?.value ?? ""} />
           {children}
         </StoreProvider>
 

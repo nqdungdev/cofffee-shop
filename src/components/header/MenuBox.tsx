@@ -52,7 +52,7 @@ const MenuBox = ({ useMenu, categories }: Props) => {
       </nav>
       {isMenu && (
         <div
-          className={`fixed left-0 top-0 w-full h-full bg-black transition-all duration-300 ${
+          className={`fixed left-0 top-0 w-full h-full bg-black transition-all duration-300 z-40 ${
             isMenu ? "opacity-50" : "opacity-0"
           }`}
         ></div>

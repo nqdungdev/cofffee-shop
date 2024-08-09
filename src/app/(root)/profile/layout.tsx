@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import { cookies } from "next/headers";
 
 type Props = {
   params: { id: string };
@@ -31,6 +32,9 @@ export default async function ProfileLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get("accessToken");
+  console.log(accessToken);
   return (
     <main className="bg-white text-black pt-[165px]">
       <div className="container">{children}</div>

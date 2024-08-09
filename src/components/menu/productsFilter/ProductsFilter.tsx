@@ -1,20 +1,11 @@
 "use client";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
 import { FaTimes, FaWindowClose } from "react-icons/fa";
 import {
   FaArrowDownShortWide,
   FaArrowUpWideShort,
   FaEye,
   FaHotjar,
-  FaMinus,
-  FaPlus,
 } from "react-icons/fa6";
 import MenuCollapse from "../common/MenuCollapse";
 import { useForm } from "react-hook-form";

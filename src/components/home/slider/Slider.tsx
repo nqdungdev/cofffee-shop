@@ -49,6 +49,8 @@ const Slider = (props: Props) => {
                     fill
                     style={{ objectFit: "cover", objectPosition: "center" }}
                     sizes="100vw"
+                    quality={100}
+                    unoptimized={true}
                   />
                 </div>
               )

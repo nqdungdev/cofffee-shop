@@ -5,7 +5,7 @@ import Products from "@/components/home/products/Products";
 
 export default function Home() {
   return (
-    <main className="in-h-screen bg-white text-black">
+    <main className="min-h-screen bg-white text-black">
       <Slider />
 
       {/* <ProductCategory /> */}
